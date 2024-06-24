@@ -26,16 +26,16 @@ This script is useful for preparing a dataset for training and validating face l
 **How to Use(more detailed in chinese)**  
 
 *新建数据集文件夹，与mtcnn_detect.py放在同级路径下*
-![Alt text](readme_png\image.png) 
-![Alt text](readme_png\image-1.png)
+![Alt text](readme_png/image.png) 
+![Alt text](readme_png/image-1.png)
 
 *修改img_dir为数据集文件夹名字*
-![Alt text](readme_png\image-3.png)
+![Alt text](readme_png/image-3.png)
 
 *修改分为训练集和验证集的名字*
-![Alt text](readme_png\image-4.png)
+![Alt text](readme_png/image-4.png)
 
 **For example(after)**  
-![Alt text](readme_png\image-5.png)
-![Alt text](readme_png\image-6.png)
-![Alt text](readme_png\image-7.png)
+![Alt text](readme_png/image-5.png)
+![Alt text](readme_png/image-6.png)
+![Alt text](readme_png/image-7.png)
