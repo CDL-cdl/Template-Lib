@@ -29,11 +29,11 @@ os.makedirs(os.path.join(img_dir, train_folder_name), exist_ok=True)
 os.makedirs(os.path.join(img_dir, val_folder_name), exist_ok=True)
 
 # 将图片文件移动到对应的文件夹中
-for f in train_files:
+for f in tqdm(train_files, desc="Moving training images"):
     train_folder = os.path.join(img_dir, train_folder_name)
     os.makedirs(train_folder, exist_ok=True)
     shutil.move(os.path.join(img_dir, f), os.path.join(train_folder, f))
-for f in val_files:
+for f in tqdm(val_files, desc="Moving validation images"):
     val_folder = os.path.join(img_dir, val_folder_name)
     os.makedirs(val_folder, exist_ok=True)
     shutil.move(os.path.join(img_dir, f), os.path.join(val_folder, f))
