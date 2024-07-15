@@ -42,7 +42,7 @@ class iAFF(nn.Module):
             nn.BatchNorm2d(channels),
         )
 
-        # 第二次本地注意力
+        # the second local_attention
         self.local_att2 = nn.Sequential(
             nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(inter_channels),
@@ -50,7 +50,7 @@ class iAFF(nn.Module):
             nn.Conv2d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(channels),
         )
-        # 第二次全局注意力
+        # the second global_attention
         self.global_att2 = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
@@ -127,18 +127,23 @@ class MS_CAM(nn.Module):
         inter_channels = int(channels // r)
 
         self.local_att = nn.Sequential(
+            # （B,C,H,W）->(B,C//r,H,W)
             nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(inter_channels),
             nn.ReLU(inplace=True),
+            # (B,C//r,H,W)->(B,C,H,W)
             nn.Conv2d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(channels),
         )
 
         self.global_att = nn.Sequential(
+            # (B, C, H, W) -> (B, C, 1, 1)
             nn.AdaptiveAvgPool2d(1),
+            # (B, C, 1, 1) -> (B, C // r, 1, 1)
             nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(inter_channels),
             nn.ReLU(inplace=True),
+            # (B, C // r, 1, 1) -> (B, C, 1, 1)
             nn.Conv2d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(channels),
         )
@@ -146,10 +151,15 @@ class MS_CAM(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
+        # (B, C, H, W)
         xl = self.local_att(x)
+        # (B, C, 1, 1)
         xg = self.global_att(x)
+        # (B, C, H, W)
         xlg = xl + xg
+        # (B, C, H, W)
         wei = self.sigmoid(xlg)
+        # (B, C, H, W)
         return x * wei
 
 
